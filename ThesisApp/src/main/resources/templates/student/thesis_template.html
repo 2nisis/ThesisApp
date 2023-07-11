@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1 0 auto;
+    }
+
+    .footer {
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand text-black" href="#">ThesisApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link text-black" th:href="@{/logout}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="content">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col">
+        <h2>Thesis Details</h2>
+        <p>Student: <span th:text="${thesis.student.name}"></span></p>
+        <p>Subject: <span th:text="${thesis.subject.title}"></span></p>
+        <p>Professor: <span th:text="${thesis.professor.name}"></span></p>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col">
+        <h2>Grades</h2>
+        <p>Implementation Grade: <span th:text="${thesis.implementationGrade}"></span></p>
+        <p>Report Grade: <span th:text="${thesis.reportGrade}"></span></p>
+        <p>Presentation Grade: <span th:text="${thesis.presentationGrade}"></span></p>
+        <p>Overall Grade: <span th:text="${thesis.overallGrade}"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2023 Dionysios Kaisaris | Kyrkos Eleftherios. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

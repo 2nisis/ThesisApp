@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Subjects</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1 0 auto;
+    }
+
+    .footer {
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand text-black" href="/student_dashboard">ThesisApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link text-black" th:href="@{/logout}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="content">
+  <div class="container mt-5">
+    <h1>Subjects</h1>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="subject : ${availableSubjects}">
+        <td th:text="${subject.title}"></td>
+        <td th:text="${subject.description}"></td>
+        <td>
+          <form th:action="@{/apply_subject}" method="post">
+            <input type="hidden" th:value="${subject.id}" name="subjectId"/>
+            <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+          </form>
+          <form th:action="@{/professor_details}" method="get">
+            <input type="hidden" th:value="${subject.professor.id}" name="id"/>
+            <button type="submit" class="btn btn-primary btn-sm">SupervisorDetails</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2023 Dionysios Kaisaris | Kyrkos Eleftherios. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

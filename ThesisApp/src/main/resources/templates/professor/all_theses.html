@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>All Theses</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1 0 auto;
+    }
+
+    .footer {
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .grades-form .form-control {
+      width: auto;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand text-black" href="/professor_dashboard">ThesisApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link text-black" th:href="@{/logout}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="content">
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-header">
+        <h3>My Theses</h3>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Implementation Grade</th>
+            <th>Report Grade</th>
+            <th>Presentation Grade</th>
+            <th>Overall Grade</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="thesis : ${theses}">
+            <td th:text="${thesis.student.name}"></td>
+            <td th:text="${thesis.subject.title}"></td>
+            <td th:text="${thesis.implementationGrade}"></td>
+            <td th:text="${thesis.reportGrade}"></td>
+            <td th:text="${thesis.presentationGrade}"></td>
+            <td th:text="${thesis.overallGrade}"></td>
+            <td>
+              <form class="grades-form" th:action="@{/set_grades}" method="post">
+                <input type="hidden" th:value="${thesis.id}" name="thesisId"/>
+                <input type="number" step="0.01" placeholder="Implementation" name="implementationGrade" class="form-control form-control-sm" required/>
+                <input type="number" step="0.01" placeholder="Report" name="reportGrade" class="form-control form-control-sm" required/>
+                <input type="number" step="0.01" placeholder="Presentation" name="presentationGrade" class="form-control form-control-sm" required/>
+                <button type="submit" class="btn btn-primary btn-sm ml-2">Set Grades</button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer bg-light py-3 mt-auto">
+  <div class="container">
+    <p class="text-muted m-0">&copy; 2023 Dionysios Kaisaris | Kyrkos Eleftherios. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

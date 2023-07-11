@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Professor Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1 0 auto;
+        }
+
+        .subject-list-container {
+            max-height: 4.5em;
+            overflow: auto;
+        }
+
+        .subject-list-container:hover {
+            max-height: 100%;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .card {
+            transition: 0.3s ease;
+        }
+
+        .card h3 {
+            color: #007bff;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand text-black" href="#">ThesisApp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-black" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="container mt-5">
+        <div class="card-deck">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h5>Profile</h5>
+                </div>
+                <div class="card-body">
+                    <p>Name: <span th:text="${professor?.name}"></span></p>
+                    <p>Surname: <span th:text="${professor?.surname}"></span></p>
+                    <a th:href="@{/professor_profile(id=${professor.id})}" class="btn btn-primary">View Profile</a>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    <h5>All Subjects</h5>
+                </div>
+                <div class="card-body">
+                    <div class="subject-list-container">
+                        <ul class="list-group subject-list">
+                            <li class="list-group-item" th:each="subject : ${subjects}">
+                                <span th:text="${subject?.title}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-2">
+                        <a class="btn btn-primary" th:href="@{/subjects_form}">Add New Subject</a>
+                        <a class="btn btn-primary" th:href="@{/subjects}">View All Subjects</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    <h5>Supervised Theses</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="thesis : ${theses}">
+                            <span th:text="${thesis?.subject.title}"></span>
+                            <span class="badge badge-primary badge-pill" th:text="${thesis.student.name + ' ' + thesis.student.surname}"></span>
+                        </li>
+                    </ul>
+                    <a th:href="@{/all_theses}" class="btn btn-primary mt-2">View All Theses</a>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Available Diploma Thesis Subjects</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Total Applicants</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="subject : ${AvailableSubjects}">
+                                    <td th:text="${subject?.title}"></td>
+                                    <td th:text="${subject?.totalApplications}"></td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <a th:href="@{/view_applications(id=${subject.id})}" class="btn btn-secondary">View Applications</a>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Selection Strategy
+                                                    </button>
+                                                    <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" th:href="@{/assign_applicant/Random(id=${subject.id})}">Random Selection</a>
+                                                        <a class="dropdown-item" th:href="@{/assign_applicant/FewestCourses(id=${subject.id})}">Fewest Courses</a>
+                                                        <a class="dropdown-item" th:href="@{/assign_applicant/AverageGrade(id=${subject.id})}">Highest Average Grade</a>
+                                                        <a class="dropdown-item" th:href="@{/assign_applicant/threshold_form(id=${subject.id})}">Threshold Strategy</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer bg-light py-3 mt-auto">
+    <div class="container">
+        <p class="text-muted m-0">&copy; 2023 Dionysios Kaisaris | Kyrkos Eleftherios. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

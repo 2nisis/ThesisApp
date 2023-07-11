@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      function updateFields() {
+        const role = $("#role").val();
+        if (role === "STUDENT") {
+          $("#studentFields").show();
+          $("#professorFields").hide();
+        } else if (role === "PROFESSOR") {
+          $("#studentFields").hide();
+          $("#professorFields").show();
+        } else {
+          $("#studentFields").hide();
+          $("#professorFields").hide();
+        }
+      }
+
+      $("#role").on("change", updateFields);
+      updateFields();
+    });
+  </script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1 0 auto;
+    }
+
+    .footer {
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand text-black" href="/index">ThesisApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link text-black" th:href="@{/login}">Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="content">
+<div class="container">
+  <h2 class="text-center mt-4">Register</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form th:action="@{/register}" th:object="${user}" method="post">
+        <div class="form-group">
+          <label for="role">Role:</label>
+          <select class="form-control" id="role" th:field="*{role}" required>
+            <option value="">-- Select Role --</option>
+            <option value="STUDENT">Student</option>
+            <option value="PROFESSOR">Professor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" class="form-control" id="username" th:field="*{username}" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" th:field="*{password}" required>
+        </div>
+
+        <div id="studentFields" style="display:none;">
+          <h3>Student Details</h3>
+
+          <div class="form-group">
+            <label for="studentName">studentName:</label>
+            <input type="text" class="form-control" id="studentName" name="studentName">
+          </div>
+
+          <div class="form-group">
+            <label for="surname">surname:</label>
+            <input type="text" class="form-control" id="surname" name="surname">
+          </div>
+
+          <div class="form-group">
+            <label for="yearOfStudies">yearOfStudies:</label>
+            <input type="text" class="form-control" id="yearOfStudies" name="yearOfStudies">
+          </div>
+
+          <div class="form-group">
+            <label for="currentAverageGrade">currentAverageGrade:</label>
+            <input type="text" class="form-control" id="currentAverageGrade" name="currentAverageGrade">
+          </div>
+
+          <div class="form-group">
+            <label for="remainingCourses">remainingCourses:</label>
+            <input type="text" class="form-control" id="remainingCourses" name="remainingCourses">
+          </div>
+
+
+
+        </div>
+
+        <div id="professorFields" style="display:none;">
+          <h3>Professor Details</h3>
+
+          <div class="form-group">
+            <label for="professorName">Name:</label>
+            <input type="text" class="form-control" id="professorName" name="professorName">
+          </div>
+          <div class="form-group">
+            <label for="professorSurname">Surname:</label>
+            <input type="text" class="form-control" id="professorSurname" name="professorSurname">
+          </div>
+          <div class="form-group">
+            <label for="professorEmail">Email:</label>
+            <input type="email" class="form-control" id="professorEmail" name="professorEmail">
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2023 Dionysios Kaisaris | Kyrkos Eleftherios. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
